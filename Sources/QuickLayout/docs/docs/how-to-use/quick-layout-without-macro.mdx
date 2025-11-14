@@ -1,0 +1,52 @@
+---
+id: manual-layout-integration
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Manual Layout Integration
+
+The @QuickLayout macro is available for all view instances, but not view controllers. When needed, you can still use QuickLayout without this macro. In that case, you will need to manually manage the view hierarchy and override the `layoutSubviews` and `sizeThatFits` methods. The snippet below demonstrates a view that does not utilize the @QuickLayout macro, but still utilizes a declarative syntax for layout.
+```swift
+import QuickLayout
+
+final class MyView: UIView {
+
+  private let label = {
+    let label = UILabel()
+    label.text = "Hello World!"
+    return label
+  }()
+
+  private let image = {
+    let image = UIImageView()
+    image.image = UIImage(systemName: "globe.americas")
+    return image
+  }()
+
+  init() {
+    super.init(frame: .zero)
+    self.addSubviews {
+      label
+      image
+    }
+  }
+
+  var body: Layout {
+    HStack {
+      label
+      Spacer(8)
+      image
+    }
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    body.applyFrame(bounds)
+  }
+
+  override func sizeThatFits(_ proposedSize: CGSize) {
+    body.sizeThatFits(proposedSize)
+  }
+}
+```

@@ -1,0 +1,27 @@
+---
+id: expandable
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Expand By
+
+```swift
+extension UIView {
+  func expand(by size: CGSize) -> Element
+}
+```
+Measures the intrinsic size of the view and then adds the additional size.
+
+### Examples
+
+```swift
+var body: Layout {
+  HStack {
+    Spacer()
+    button
+      .expand(by: CGSize(width: 8, height: 8))
+    Spacer()
+  }
+}
+```

@@ -1,0 +1,48 @@
+---
+id: zstack
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# ZStack
+
+<img width="300" src={useBaseUrl('img/layout-elements/zstack1.png')} />
+<br/><br/>
+
+```swift
+func ZStack(
+  alignment: Alignment = .center,
+  @FastArrayBuilder<Element> children: () -> [Element]
+)
+```
+
+ZStack arranges child elements on top of each other and acquires the size of the largest element.
+
+```swift
+var body: Layout {
+  ZStack {
+    background
+    label
+  }
+}
+```
+
+
+### Alignment
+
+Control the alignment of elements within the ZStack with the `alignment` property. The following snippets aligns all views to the top leading corner of the ZStack.
+
+<img width="300" src={useBaseUrl('img/layout-elements/zstack2.png')} />
+
+```swift
+var body: Layout {
+  ZStack(alignment: .topLeading) {
+    view1
+    view2
+    view3
+  }
+}
+```
+### Performance Considerations
+
+ZStack measures each child element exactly once.

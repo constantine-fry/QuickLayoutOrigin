@@ -1,0 +1,34 @@
+---
+id: fixed-size
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Fixed Size
+
+```swift
+extension Element {
+  func fixedSize(axis: AxisSet = [.horizontal, .vertical]) -> Element
+}
+```
+
+The fixed size modifier proposes the child view an infinite size, allowing it to expand freely to its intrinsic size without any constraints.
+By specifying an axis, the modifier applies infinity along that single axis.
+
+```swift
+var body: Layout {
+  VStack {
+    label1
+      .frame(width: 100, height: 100)
+    label2
+      .fixedSize()
+      .frame(width: 100, height: 100)
+  }
+}
+```
+In the snippet above, The `label2` will be sized to its intrinsic size, ignoring frame 100x100.
+See the image below for the resulting layout:
+
+<div style={{textAlign: 'center'}}>
+<img width="400" src={useBaseUrl('img/layout-elements/fixed-size1.png')} />
+</div>

@@ -1,0 +1,81 @@
+---
+id: proposed-size
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Proposed Size
+
+Conceptually, each element in the layout tree proposes a size to its child, and the child reports an intrinsic size. However, in practice, things are more nuanced because each element will have a different algorithm for layout. Let's take a look at how the Frame and Padding elements handle the proposed size. First, we would need to set up the following LayoutNode and Element protocols.
+
+```swift
+struct LayoutNode {
+  let size: CGSize
+  let children: [LayoutNode]
+}
+
+protocol Element {
+  public func quick_layoutThatFits(_ proposedSize: CGSize) -> LayoutNode
+}
+```
+
+Note that `quick_layoutThatFits` is very similar to `UIView.sizeThatFits`, the difference is that instead of returning CGSize it returns a tree of LayoutNodes. Each node will contain a size of an element.
+
+
+### Frame
+
+A basic Frame element in QuickLayout would look as follows:
+
+```swift
+struct FrameElement: Element {
+
+  private let child: Element
+  private let width: CGFloat
+  private let height: CGFloat
+
+  /// 1. The frame element ignores the proposed size
+  /// 2. It creates a new proposed size based on its width and height.
+  /// 3. The child is being proposed the size of the frame.
+  /// 4. It uses width and height as it's own size.
+  public func quick_layoutThatFits(_ proposedSize: CGSize) -> LayoutNode {
+    let frameSize = CGSize(width: width, height: height)
+    let childNode = child.quick_layoutThatFits(frameSize)
+    return LayoutNode(frameSize, [childNode])
+  }
+}
+```
+
+In reality, the Frame class is a bit more involved (see `FixedFrameElement.swift`). However, the snippet demonstrates why a frame is often described as a `picture frame`: it ignores the proposed size, and the child element is still able to choose its own size.
+
+### Padding
+
+Here is how a basic padding would be implemented:
+
+```swift
+struct PaddingElement: Element {
+
+  private let child: Element
+  private let insets: UIEdgeInsets
+
+  /// 1. Padding constructs a new proposed size by subtracting the
+  ///    inset from proposedSize.
+  /// 2. The child element resolves its intrinsic size within the new proposed size.
+  /// 3. The padding element acquires the size of the child plus the inset.
+  public func quick_layoutThatFits(_ proposedSize: CGSize) -> LayoutNode {
+    let newProposedSize = CGSize(
+      width: proposedSize.width - insets.left - insets.right,
+      height: proposedSize.height - insets.top - insets.bottom
+    )
+
+    let childNode = child.quick_layoutThatFits(newProposedSize)
+
+    let paddingSize = CGSize(
+      width: childNode.size.width + insets.left + insets.right,
+      height: childNode.size.height + insets.top + insets.bottom
+    )
+    return LayoutNode(size: paddingSize, children: [childNode])
+  }
+}
+```
+
+Note that unlike in Frame element, the size of the padding modifier depends on the size of the child.

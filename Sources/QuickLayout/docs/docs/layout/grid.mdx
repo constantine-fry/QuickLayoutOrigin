@@ -1,0 +1,272 @@
+---
+id: grid
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+
+# Grid
+
+<img width="500" src={useBaseUrl('img/layout-elements/grid1.png')} />
+<br/><br/>
+
+
+A grid is a layout container that arranges views into a table-like structure with rows and columns.
+
+```swift
+public func Grid(
+  alignment: Alignment = .center,
+  horizontalSpacing: CGFloat = 0,
+  verticalSpacing: CGFloat = 0,
+  @FastArrayBuilder<GridRowElement> rows: () -> [GridRowElement] = { [] },
+) -> Element & Layout
+
+public func GridRow(
+  alignment: VerticalAlignment? = nil,
+  @FastArrayBuilder<Element> children: () -> [Element]
+) -> GridRowElement
+```
+
+```swift
+var body: Layout {
+  Grid {
+    GridRow {
+      view1
+      view2
+      view3
+    }
+    GridRow {
+      view4
+      view5
+      view6
+    }
+  }
+}
+```
+
+## Alignment
+
+
+Each grid view has two alignment properties: horizontal and vertical alignment. This controls the position of the view within its cell.
+
+There are four main alignment types:
+
+`Grid Alignment` -
+Sets the initial horizontal and vertical alignment for all views within the grid, which is `.center` by default.
+
+`Row Alignment` -
+   Overrides the vertical alignment for every view in a specific row.
+
+`Column Alignment` -
+   Overrides the horizontal alignment for views in a specific column.
+
+`Grid Cell Anchor Alignment` -
+   Overrides both the horizontal and vertical alignment for an individual view.
+
+
+
+### Grid Alignment
+
+This serves as the default alignment for all views and is the lowest-priority alignment. It is applied to the grid as a whole and determines how every view within the grid is aligned within its own cell.
+
+```swift
+var body: Layout {
+  Grid(alignment: .top) {
+    GridRow {
+      view1
+      view2
+      view3
+    }
+    GridRow {
+      view4
+      view5
+      view6
+    }
+  }
+}
+```
+
+<img width="500" src={useBaseUrl('img/layout-elements/grid2.png')} />
+<br/><br/>
+
+
+
+
+### Row Alignment
+
+Row alignment overrides the vertical alignment for every view in a row. This is the second-highest priority alignment, and it overrides the grid's vertical alignment.
+
+```swift
+var body: Layout {
+  Grid {
+    GridRow {
+      view1
+      view2
+      view3
+    }
+    GridRow(alignment: .bottom) {
+      view4
+      view5
+      view6
+    }
+  }
+}
+```
+
+
+<img width="500" src={useBaseUrl('img/layout-elements/grid3.png')} />
+<br/><br/>
+
+### Column Alignment
+
+Column alignment overrides the horizontal alignment for every view in a column. This is also the second-highest priority alignment, and it overrides the grid's horizontal alignment.
+
+```swift
+var body: Layout {
+  Grid {
+    GridRow {
+      view1
+        .gridColumnAlignment(.leading)
+      view2
+    }
+    GridRow {
+      view3
+      view4
+    }
+    GridRow {
+      view5
+      view6
+    }
+  }
+}
+```
+<img width="300" src={useBaseUrl('img/layout-elements/grid4.png')} />
+<br/><br/>
+
+
+### Grid Cell Anchor Alignment
+
+Grid cell anchor alignment applies a horizontal and vertical alignment to a specific view in a grid. This is the highest priority alignment, and it overrides both the horizontal amd vertical alignment of an view.
+
+```swift
+var body: Layout {
+  Grid {
+    GridRow {
+      view1
+      view2
+    }
+    GridRow {
+      view3
+      view4
+        .gridCellAnchor(.bottomTrailing)
+    }
+  }
+}
+```
+
+<img width="300" src={useBaseUrl('img/layout-elements/grid5.png')} />
+<br/><br/>
+
+Alternatively, you can specify a custom `UnitPoint` to position the view to a specific point in the cell.
+
+
+
+```swift
+var body: Layout {
+  Grid {
+    GridRow {
+      view1
+      view2
+    }
+    GridRow {
+      view3
+      view4
+        .gridCellAnchor(UnitPoint(x: 0.5, y: 1.0))
+    }
+  }
+}
+```
+
+<img width="300" src={useBaseUrl('img/layout-elements/grid6.png')} />
+<br/><br/>
+
+### Spacing
+
+A fixed amount of spacing can be added between rows and columns using the `verticalSpacing` parameter for spacing between rows and the `horizontalSpacing` parameter for spacing between columns.
+
+
+```swift
+var body: Layout {
+  Grid(verticalSpacing: 8) {
+    GridRow {
+      view1
+      view2
+      view3
+    }
+    GridRow {
+      view4
+      view5
+      view6
+    }
+  }
+}
+```
+
+<img width="300" src={useBaseUrl('img/layout-elements/grid7.png')} />
+<br/><br/>
+
+```swift
+var body: Layout {
+  Grid(horizontalSpacing: 8) {
+    GridRow {
+      view1
+      view2
+      view3
+    }
+    GridRow {
+      view4
+      view5
+      view6
+    }
+  }
+}
+```
+
+<img width="400" src={useBaseUrl('img/layout-elements/grid8.png')} />
+<br/><br/>
+
+
+`verticalSpacing` and `horizontalSpacing` can be used together.
+
+
+
+
+```swift
+var body: Layout {
+  Grid(horizontalSpacing: 8, verticalSpacing: 8) {
+    GridRow {
+      view1
+      view2
+      view3
+    }
+    GridRow {
+      view4
+      view5
+      view6
+    }
+  }
+}
+```
+
+
+<img width="400" src={useBaseUrl('img/layout-elements/grid9.png')} />
+<br/><br/>
+
+### Performance Considerations
+Grid may measure cells up to 3 times.
+Second measurement occures when a text needs to be broken into multiple lines.
+Third measurement occures when a multiline text is truncated.
+
+
+:::note
+Grid layout does not support `gridCellColumns` and `gridCellUnsizedAxis` modifiers.

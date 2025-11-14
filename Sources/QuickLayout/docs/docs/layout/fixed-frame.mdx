@@ -1,0 +1,47 @@
+---
+id: fixed-frame
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Fixed Frame
+
+<img width="250" src={useBaseUrl('img/layout-elements/frame1.png')} />
+<br/><br/>
+
+```swift
+extension Element {
+  func frame(width: CGFloat? = nil, height: CGFloat? = nil, alignment: Alignment = .center) -> Element
+}
+```
+
+The Fixed Frame positions its child element inside an invisible container of a given size.
+If you omit a size (or pass nil), the frame will use the sizing behavior of its child element for that axis.
+When using this method, you must provide at least one size constraint.
+
+:::caution Frame doesn't change the size of the view
+
+The `Frame` modifier does not directly change the size of its child view but acts like a "picture frame." It proposes the size to the child view, but the child may choose to have a smaller size. Therefore, the `Frame` modifier uses the `alignment` parameter to position the child within its own size.
+:::
+
+:::tip Use resizable modifier
+
+To enforce a view uncoditionally acquire the size of the frame, wrap it with the `resizable` modifier.
+```swift
+var body: Layout {
+  HStack {
+    faceImageView
+      .resizable()
+      .frame(width: 40, height: 40)
+    label
+  }
+}
+```
+:::
+
+### Alignment
+
+The frame allows you to control the position of the child view within it's space with the `alignment` parameter.
+See the image below demonstrating the frame with various alignments and labels.
+
+<img width="800" src={useBaseUrl('img/layout-elements/frame2.png')} />

@@ -1,0 +1,31 @@
+---
+id: thread-safety
+---
+
+# Thread Safety
+
+QuickLayout is designed to be a powerful and flexible layout engine, allowing you to create complex layouts with ease.
+One of the key benefits of QuickLayout is its thread safety, which enables you to use it in a variety of scenarios, including concurrent programming.
+
+### Layout Algorithm Thread Safety
+The layout algorithm itself, including `VStack`, `HStack`, `frame`, `padding`, and other layout functions, are thread safe.
+However, the overall threadsafety of any layout operation depends on the threadsafety of leaf elements used in your layout hierarchy.
+If your layout contains `UIView` instances, the `sizeThatFits` and `applyFrame` methods can only be used on the main thread which means layout overall has to be used on the main thread and attempting to do otherwise will result in a runtime error.
+
+<FbInternalOnly>
+
+### Integrating QuickLayout with ComponentUI
+If you need to integrate QuickLayout with ComponentUI and require a thread-safe way of creating leaf elements,
+you can define static functions that use QuickLayout, but instead of views, use instances of **thread-safe** ViewProxies.
+This approach allows you to create layouts that can be safely accessed from any thread. See `CodeFormattingView.swift` and D71543863 for sample integration.
+
+### Use FOALabel for Thread-Safe Text Measurements
+For thread-safe text measurements, we recommend using `FOALabel` instead of `UILabel.proxy`. `FOALabel` provides a thread-safe way to measure text sizes, making it an ideal choice for concurrent programming scenarios.
+By following these guidelines and best practices, you can ensure that your QuickLayout-based layouts are thread safe and performant, even in the most demanding concurrent programming environments.
+
+</FbInternalOnly>
+
+:::warning UILabel.Proxy is Not Thread Safe
+When using ViewProxies, keep in mind that UILabel.proxy is not thread safe.
+This is because it uses a shared instance of UILabel to calculate size, which can lead to crashes or unexpected behavior when accessed from multiple threads.
+:::

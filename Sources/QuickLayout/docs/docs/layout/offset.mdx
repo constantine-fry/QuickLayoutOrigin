@@ -1,0 +1,33 @@
+---
+id: offset
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Offset
+
+<img width="300" src={useBaseUrl('img/layout-elements/offset1.png')} />
+<br/><br/>
+
+```swift
+extension Element {
+  func offset(x: CGFloat = 0, y: CGFloat = 0) -> Element
+}
+```
+
+Offsets the child element by the specified amount.
+
+### Examples
+
+```swift
+var body: Layout {
+  HStack {
+    faceView1
+    faceView2
+      .offset(y: -30)
+    faceView3
+    faceView4
+    faceView5
+  }
+}
+```

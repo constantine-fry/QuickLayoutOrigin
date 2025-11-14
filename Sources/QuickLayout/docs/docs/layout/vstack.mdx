@@ -1,0 +1,88 @@
+---
+id: vstack
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# VStack
+
+<img width="200" src={useBaseUrl('img/layout-elements/vstack1.png')} />
+<br/><br/>
+
+```swift
+func VStack(
+  alignment: HorizontalAlignment = .center,
+  spacing: CGFloat = 0,
+  @FastArrayBuilder<Element> children: () -> [Element]
+)
+```
+
+VStack arranges child elements vertically and acquires the size of all children.
+All child elements are layout even if they are not visible on screen. Use `UICollectionView` or `UITableView` to make infinitly scrollable lists.
+
+```swift
+var body: Layout {
+  VStack {
+    view1
+    view2
+    view3
+  }
+}
+```
+
+
+### Alignment
+
+<img width="800" src={useBaseUrl('img/quickstart/img3.png')} />
+<br/><br/>
+
+You can control alignment of elements within stack with the `alignment` parameter:
+```swift
+var body: Layout {
+  VStack(alignment: .leading) {
+    view1
+    view2
+    view3
+  }
+}
+```
+
+### Spacing
+
+A fixed amount of spacing can be added between every element via `spacing` parameter:
+
+```swift
+var body: Layout {
+  VStack(spacing: 10) {
+    label1
+    label2
+  }
+}
+```
+
+### Spacer
+
+A `Spacer` can be used to specify flexible spacing or fixed spacing:
+
+```swift
+var body: Layout {
+  VStack {
+    Spacer()
+    label1
+    Spacer(10)
+    label2
+    Spacer()
+  }
+}
+```
+### Performance Considerations
+
+Up to two measurements may be performed to determine the size of certain child elements.
+Fixed-size elements (e.g., .frame() or UIImage) are measured only once.
+Fully flexible elements are not measured directly; instead, they are assigned a size based on the available space, which is proportionally distributed among all fully flexible views.
+
+If a stack contains two or more partially flexible views (e.g., UILabel) and the proposed size is smaller than the intrinsic content size, the child elements may be measured multiple times.
+A common indication of double measurements in a VStack is truncated multiline text.
+When the proposed size is infinite, no double measurement occurs.
+
+To avoid double measurement, use .layoutPriority() modifier to specify the order in which child elements should be measured.

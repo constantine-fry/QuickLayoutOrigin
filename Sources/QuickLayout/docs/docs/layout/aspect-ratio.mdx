@@ -1,0 +1,30 @@
+---
+id: aspect-ratio
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Aspect Ratio
+
+```swift
+extension Element {
+  func aspectRatio(_ ratio: CGSize, contentMode: ContentMode = .fit) -> Element
+}
+```
+
+Constrains the view’s dimensions to an aspect ratio specified by a CGSize.
+If this view is resizable, it uses aspectRatio as its own aspect ratio.
+
+### Examples
+
+```swift
+var body: Layout {
+  VStack {
+    imageView
+      .resizable()
+      .aspectRatio(CGSize(width: 3, height: 2))
+    Spacer(8)
+    label
+  }
+}
+```

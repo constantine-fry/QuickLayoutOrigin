@@ -1,0 +1,131 @@
+---
+id: hflow
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# HFlow
+<img width="600" src={useBaseUrl('img/layout-elements/hflow1.png')} />
+<br/><br/>
+
+HFlow is a multi-line HStack that starts a new line every time elements don't fit in the bounding space.
+
+
+```swift
+public func HFlow(
+  itemAlignment: VerticalAlignment = .center,
+  lineAlignment: HorizontalAlignment = .center,
+  itemSpacing: CGFloat = 0,
+  lineSpacing: CGFloat = 0,
+  @FastArrayBuilder<Element> children: () -> [Element]
+) -> Element & Layout
+```
+
+```swift
+var body: Layout {
+  HFlow {
+    icon
+    label
+    Button
+  }
+}
+```
+
+
+### Item Alignment
+
+Items within a line can be aligned vertically using the `itemAlignment` parameter. The default value is `.center`
+
+<img  src={useBaseUrl('img/layout-elements/hflow2.png')} />
+
+
+<div style={{textAlign: 'center'}}>
+  <img  width="400" src={useBaseUrl('img/layout-elements/hflow3.png')} />
+</div>
+
+
+```swift
+var body: Layout {
+  HFlow(itemAlignment: .center) {
+    icon
+    label
+    Button
+  }
+}
+```
+
+### Line Alignment
+
+Similarily, lines can be aligned horizontally using the `lineAlignment` parameter. The default value is `.center`
+
+<img  src={useBaseUrl('img/layout-elements/hflow4.png')} />
+
+
+<div style={{textAlign: 'center'}}>
+  <img  width="400" src={useBaseUrl('img/layout-elements/hflow5.png')} />
+</div>
+
+
+```swift
+var body: Layout {
+  HFlow(lineAlignment: .leading) {
+    icon
+    label
+    Button
+  }
+}
+```
+
+### Spacing
+
+A fixed amount of spacing can be added between each item using the `itemSpacing` parameter or betweeen each line using the `lineSpacing` parameter. The default value is 0.
+
+<img  width="400" src={useBaseUrl('img/layout-elements/hflow6.png')} />
+<br></br>
+
+```swift
+var body: Layout {
+  HFlow(itemSpacing: 8) {
+    icon
+    label
+    Button
+  }
+}
+```
+
+<img width="400"  src={useBaseUrl('img/layout-elements/hflow7.png')} />
+
+<br></br>
+
+
+```swift
+var body: Layout {
+  HFlow(lineSpacing: 8) {
+    icon
+    label
+    Button
+  }
+}
+```
+
+Like all other parameters, itemSpacing and lineSpacing can be combined.
+
+<img  width="400" src={useBaseUrl('img/layout-elements/hflow8.png')} />
+
+```swift
+var body: Layout {
+  HFlow(itemSpacing: 8, lineSpacing: 8) {
+    icon
+    label
+    Button
+  }
+}
+```
+
+### Performance Considerations
+
+HFlow measures each child element exactly once.
+
+:::note
+Spacer Element cannot be used with HFlow
+:::

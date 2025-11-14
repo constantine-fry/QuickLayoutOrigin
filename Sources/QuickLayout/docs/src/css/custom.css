@@ -1,0 +1,343 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+/** https://docusaurus.community/knowledge/design/css/variables/ */
+:root {
+/** Text */
+  --ifm-font-color-base: #1C1E21;
+  --ifm-font-color-base-inverse: #F5F5F7;
+  --ifm-font-family-base: 'Roboto';
+
+/** Menu */
+  --ifm-menu-color: #4B4F56;
+
+  --ifm-color-primary: #3c86ff;
+  --ifm-color-primary-dark: #1e74ff;
+  --ifm-color-primary-darker: #0e6aff;
+  --ifm-color-primary-darkest: #0055e0;
+  --ifm-color-primary-light: #5a99ff;
+  --ifm-color-primary-lighter: #6aa3ff;
+  --ifm-color-primary-lightest: #97bfff;
+  --ifm-code-font-size: 92%;
+  --ifm-global-shadow-lw: null;
+  --ifm-global-radius: 1rem;
+  --ifm-footer-background-color: #ffffff00;
+  --ifm-toc-border-color: #ffffff00;
+  --ifm-menu-color-background-active: #ffffff00;
+  --docs-color-border: #dadde1;
+  --ifm-menu-color: #454746;
+}
+
+html[data-theme='dark'] {
+  --ifm-font-color-base: #F5F5F7;
+  --ifm-menu-color: #F5F5F7;
+  --ifm-background-color: #0D1117;
+  --ifm-code-background: #1E242A;
+  --ifm-toc-border-color: #ffffff00;
+  --ifm-menu-color-background-active: #ffffff00;
+  --ifm-navbar-background-color: #25292E;
+
+  --ifm-alert-color: yellow;
+  --ifm-alert-border-color: red;
+  --docs-color-border: null;
+  pre {
+    background-color: #151B23;
+  }
+}
+
+.navbar__title {
+  font-weight: medium !important;
+}
+
+h1 { font-size: 36px !important; line-height: 40px; }
+h2 { font-size: 30px !important; line-height: 36px; }
+h3 { font-size: 24px !important; line-height: 32px; }
+body { font-size: 16px !important; line-height: 26px; }
+
+li code,p code,td code {
+  border-radius: 6px !important;
+  padding: 2px 3px
+}
+
+.pagination-nav__link--prev .pagination-nav__label {
+  text-align: right
+}
+
+.pagination-nav__link--next .pagination-nav__label {
+  text-align: left
+}
+
+.pagination-nav__link {
+  border-radius: 2rem
+}
+
+
+.pagination-nav__sublabel {
+  display: none;
+}
+
+pre code {
+  background: #f0f4ff;
+  border: 1px solid #c6d6ff;
+}
+
+[data-theme=dark] details.alert.alert--info,[data-theme=dark] pre code {
+    background: #1e2538;
+    border: 1px solid #2d3956
+}
+
+/** source https://github.com/facebook/docusaurus/issues/7562#issuecomment-1176697127 */
+@media (min-width: 1416px) {
+  .main-wrapper {
+    align-self: center;
+    max-width: 1400px;
+    width: 1400px;
+  }
+}
+
+/* Light Theme */
+.alert--secondary {
+  background-color: #f5f7fa;
+  border: 1px solid #e4e7eb;
+}
+
+.alert--success {
+  background-color: #e6f4ea;
+  border: 1px solid #c8e6c9;
+}
+
+.alert--success code {
+  background-color: #d5f4ea;
+  border: 1px solid #c8e6c9;
+}
+
+.alert--info {
+  background-color: #e8f1fa;
+  border: 1px solid #d0e3fa;
+}
+
+.alert--info code {
+  background-color: #d0e3fa;
+  border: 1px solid #d0e3fa;
+  border-radius: 12px;
+}
+
+.alert--warning {
+  background-color: #fff8e1;
+  border: 1px solid #ffe082;
+}
+
+.alert--warning code {
+  background-color: #ffe5b2;
+  border: 1px solid #ffe082;
+}
+
+.alert--danger {
+  background-color: #fdecea;
+  border: 1px solid #ffccd5;
+}
+
+.alert--danger code {
+  background-color: #ffccd5;
+  border: 1px solid #ffccd5;
+}
+
+/* Dark Theme */
+[data-theme=dark] .alert--secondary {
+  background-color: #23272f;
+  border: 1px solid #262a32; /* barely lighter than background */
+}
+
+[data-theme=dark] .alert--success {
+  background-color: #1b3c2e;
+  border: 1px solid #204635; /* subtle green tint, low contrast */
+}
+
+[data-theme=dark] .alert--success code {
+  background-color: #255d3a;
+  border: 1px solid #255d3a;
+  color: #e6f4ea;
+}
+
+[data-theme=dark] .alert--info {
+  background-color: #1a2636;
+  border: 1px solid #202d40; /* subtle blue-gray */
+}
+
+[data-theme=dark] .alert--info code {
+  background-color: #223a5e;
+  border: 1px solid #223a5e;
+  color: #e8f1fa;
+}
+
+[data-theme=dark] .alert--warning {
+  background-color: #3a2e1a;
+  border: 1px solid #4a3a1e; /* subtle brown/yellow */
+}
+
+[data-theme=dark] .alert--warning code {
+  background-color: #5c4320;
+  border: 1px solid #5c4320;
+  color: #fff8e1;
+}
+
+[data-theme=dark] .alert--danger {
+  background-color: #3a2323;
+  border: 1px solid #4a2a2a; /* subtle red-brown */
+}
+
+[data-theme=dark] .alert--danger code {
+  background-color: #5e2a2a;
+  border: 1px solid #5e2a2a;
+  color: #fdecea;
+}
+
+  /* https://icon-sets.iconify.design/solar/pen-outline/ */
+.alert--success svg {
+  display: inline-block;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' fill-rule='evenodd' d='M14.757 2.621a4.682 4.682 0 0 1 6.622 6.622l-9.486 9.486c-.542.542-.86.86-1.216 1.137q-.628.492-1.35.835c-.406.193-.834.336-1.56.578l-3.332 1.11l-.802.268a1.81 1.81 0 0 1-2.29-2.29l1.378-4.133c.242-.727.385-1.155.578-1.562q.344-.72.835-1.35c.276-.354.595-.673 1.137-1.215zM4.4 20.821l2.841-.948c.791-.264 1.127-.377 1.44-.526q.572-.274 1.073-.663c.273-.214.525-.463 1.115-1.053l7.57-7.57a7.36 7.36 0 0 1-2.757-1.744A7.36 7.36 0 0 1 13.94 5.56l-7.57 7.57c-.59.589-.84.84-1.053 1.114q-.39.5-.663 1.073c-.149.313-.262.649-.526 1.44L3.18 19.6zM15.155 4.343c.035.175.092.413.189.69a5.86 5.86 0 0 0 1.4 2.222a5.86 5.86 0 0 0 2.221 1.4c.278.097.516.154.691.189l.662-.662a3.182 3.182 0 0 0-4.5-4.5z' clip-rule='evenodd'/%3E%3C/svg%3E");
+  background-color: currentColor;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  position: relative;
+  bottom: 0.1rem;
+}
+
+.alert--secondary svg {
+  display: inline-block;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' fill-rule='evenodd' d='M14.757 2.621a4.682 4.682 0 0 1 6.622 6.622l-9.486 9.486c-.542.542-.86.86-1.216 1.137q-.628.492-1.35.835c-.406.193-.834.336-1.56.578l-3.332 1.11l-.802.268a1.81 1.81 0 0 1-2.29-2.29l1.378-4.133c.242-.727.385-1.155.578-1.562q.344-.72.835-1.35c.276-.354.595-.673 1.137-1.215zM4.4 20.821l2.841-.948c.791-.264 1.127-.377 1.44-.526q.572-.274 1.073-.663c.273-.214.525-.463 1.115-1.053l7.57-7.57a7.36 7.36 0 0 1-2.757-1.744A7.36 7.36 0 0 1 13.94 5.56l-7.57 7.57c-.59.589-.84.84-1.053 1.114q-.39.5-.663 1.073c-.149.313-.262.649-.526 1.44L3.18 19.6zM15.155 4.343c.035.175.092.413.189.69a5.86 5.86 0 0 0 1.4 2.222a5.86 5.86 0 0 0 2.221 1.4c.278.097.516.154.691.189l.662-.662a3.182 3.182 0 0 0-4.5-4.5z' clip-rule='evenodd'/%3E%3C/svg%3E");
+  background-color: currentColor;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  position: relative;
+  bottom: 0.1rem;
+}
+
+/* https://icon-sets.iconify.design/solar/pen-outline/ */
+.alert--info svg {
+  display: inline-block;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' fill-rule='evenodd' d='M14.757 2.621a4.682 4.682 0 0 1 6.622 6.622l-9.486 9.486c-.542.542-.86.86-1.216 1.137q-.628.492-1.35.835c-.406.193-.834.336-1.56.578l-3.332 1.11l-.802.268a1.81 1.81 0 0 1-2.29-2.29l1.378-4.133c.242-.727.385-1.155.578-1.562q.344-.72.835-1.35c.276-.354.595-.673 1.137-1.215zM4.4 20.821l2.841-.948c.791-.264 1.127-.377 1.44-.526q.572-.274 1.073-.663c.273-.214.525-.463 1.115-1.053l7.57-7.57a7.36 7.36 0 0 1-2.757-1.744A7.36 7.36 0 0 1 13.94 5.56l-7.57 7.57c-.59.589-.84.84-1.053 1.114q-.39.5-.663 1.073c-.149.313-.262.649-.526 1.44L3.18 19.6zM15.155 4.343c.035.175.092.413.189.69a5.86 5.86 0 0 0 1.4 2.222a5.86 5.86 0 0 0 2.221 1.4c.278.097.516.154.691.189l.662-.662a3.182 3.182 0 0 0-4.5-4.5z' clip-rule='evenodd'/%3E%3C/svg%3E");
+  background-color: currentColor;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  position: relative;
+  bottom: 0.1rem;
+}
+
+/* https://icon-sets.iconify.design/solar/shield-warning-outline/ */
+.alert--warning svg {
+  display: inline-block;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 7.25a.75.75 0 0 1 .75.75v4a.75.75 0 0 1-1.5 0V8a.75.75 0 0 1 .75-.75M12 16a1 1 0 1 0 0-2a1 1 0 0 0 0 2'/%3E%3Cpath fill='%23000' fill-rule='evenodd' d='M8.723 2.051c1.444-.494 2.34-.801 3.277-.801s1.833.307 3.277.801l.727.25c1.481.506 2.625.898 3.443 1.23c.412.167.767.33 1.052.495c.275.16.55.359.737.626c.185.263.281.587.341.9c.063.324.1.713.125 1.16c.048.886.048 2.102.048 3.678v1.601c0 6.101-4.608 9.026-7.348 10.224l-.027.011c-.34.149-.66.288-1.027.382c-.387.1-.799.142-1.348.142c-.55 0-.96-.042-1.348-.142c-.367-.094-.687-.233-1.027-.382l-.027-.011C6.858 21.017 2.25 18.092 2.25 11.99v-1.6c0-1.576 0-2.792.048-3.679c.025-.446.062-.835.125-1.16c.06-.312.156-.636.34-.9c.188-.266.463-.465.738-.625c.285-.165.64-.328 1.052-.495c.818-.332 1.962-.724 3.443-1.23zM12 2.75c-.658 0-1.305.212-2.92.764l-.572.196c-1.513.518-2.616.896-3.39 1.21a7 7 0 0 0-.864.404a2 2 0 0 0-.208.139a.4.4 0 0 0-.055.05a.4.4 0 0 0-.032.074q-.03.082-.063.248a7 7 0 0 0-.1.958c-.046.841-.046 2.015-.046 3.624v1.574c0 5.176 3.87 7.723 6.449 8.849c.371.162.586.254.825.315c.228.059.506.095.976.095s.748-.036.976-.095c.24-.06.454-.153.825-.315c2.58-1.126 6.449-3.674 6.449-8.849v-1.574c0-1.609 0-2.783-.046-3.624a7 7 0 0 0-.1-.958a2 2 0 0 0-.063-.248a.4.4 0 0 0-.032-.074a.4.4 0 0 0-.055-.05a2 2 0 0 0-.208-.14a7 7 0 0 0-.864-.402c-.774-.315-1.877-.693-3.39-1.21l-.573-.197C13.305 2.962 12.658 2.75 12 2.75' clip-rule='evenodd'/%3E%3C/svg%3E");
+  background-color: currentColor;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  position: relative;
+  bottom: 0.1rem;
+}
+
+/* https://icon-sets.iconify.design/solar/fire-minimalistic-outline/ */
+.alert--danger svg {
+  display: inline-block;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-width='1.5' d='M12 21c4.418 0 8-3.356 8-7.496c0-3.741-2.035-6.666-3.438-8.06c-.26-.258-.694-.144-.84.189c-.748 1.69-2.304 4.123-4.293 4.123c-1.232.165-3.112-.888-1.594-6.107c.137-.47-.365-.848-.749-.534C6.905 4.905 4 8.511 4 13.504C4 17.644 7.582 21 12 21Z'/%3E%3C/svg%3E");
+  background-color: currentColor;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  position: relative;
+  bottom: 0.1rem;
+}
+
+.navbar .navbar__inner {
+    margin: 0 auto;
+    max-width: 1360px;
+}
+
+.navbar {
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.pagination-nav__link--prev {
+  display: none;
+}
+
+.pagination-nav__link--next .pagination-nav__label:after {
+  content: '';
+}
+
+.pagination-nav__link--next .pagination-nav__label {
+  padding-right: 0.5rem;
+}
+
+.pagination-nav__link--next .pagination-nav__label:before {
+  content: 'Next: ';
+  font-weight: bold;
+  padding-left: 0.5rem;
+}
+
+.pagination-nav__link .pagination-nav__label {
+    color: var(--ifm-font-color-base);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    position: relative
+}
+
+.pagination-nav {
+  display: flex;
+  grid-column: none;
+}
+
+.docusaurus-mt-lg {
+  margin-top: 1rem !important;
+}
+
+.theme-edit-this-page {
+  color: var(--ifm-font-color-base);
+  order: 10;
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+html[data-theme='dark'] .docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.3);
+}

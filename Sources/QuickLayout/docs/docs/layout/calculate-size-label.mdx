@@ -1,0 +1,40 @@
+---
+id: calculate-size-label
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Calculate size of a Label
+
+There are many options to calculate the size of a label, though none is perfect.
+
+## `UILabel.textRectForBounds`
+
+This method respects the constraining size. However, Apple docs say that it shouldn't be called directly.
+Moreover, it doesn't perform well when compared to sizeThatFits.
+
+<img src={useBaseUrl('img/calculate-size-label/UILabel_textRectForBounds_example.png')} />
+
+## `NSString.boundingRectWithSize:options:attributes:context:`
+
+According to rumors the size returned by this method may not match the size needed for UILabel.
+For instance, UILabel may add extra inset or adjust line spacing to fit larger characters (e.g. emojis).
+
+## `UILabel.sizeThatFits`
+
+The method appears to do some caching to optimize repetitive calls with the same constraning size.
+
+<img src={useBaseUrl('img/calculate-size-label/UILabel_sizeThatFits_example.png')} />
+
+It will return the desired size for the label, however with no respect the constraining size.
+For instance when numberOfLines is set to 1, UILabel will ignore the width constraint.
+When numberOfLines is set to 0, UILabel will ignore the height constraint.
+
+## Label layout implementation in QuickLayout
+
+For Labels' layout implementation, the measured size is clamped with the constraining size
+to ensure the label doesn't grow beyond the proposed size.
+This is OK but not ideal because clamping wouldn't round to the nearest visible line
+leading to extra space on top and bottom.
+
+<img src={useBaseUrl('img/calculate-size-label/UILabel_sizeThatFits_example_2.png')} />

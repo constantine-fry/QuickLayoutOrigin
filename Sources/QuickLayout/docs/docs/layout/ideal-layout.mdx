@@ -1,0 +1,56 @@
+---
+id: ideal-layout
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Ideal Layout
+
+```swift
+extension StackElement {
+  func idealLayout() -> Element
+}
+```
+
+:::danger Ideal Layout
+When using Ideal Layout, be aware that it will always double measure.
+This can lead to frame drops in collection views, so reserve its use for cases where it's absolutely necessary.
+:::
+
+
+The ideal layout modifier, comibined with resizable views allows you to create Stacks with equal size views along the cross axis.
+
+```swift
+var body: Layout {
+  VStack {
+    logInButton
+      .resizable(axis: .horizontal)
+    Spacer(12)
+    forgotPasswordButton
+      .resizable(axis: .horizontal)
+  }
+  .idealLayout()
+}
+```
+In the snippet above, the vertical stack will make both buttons have equal width:
+
+<div style={{textAlign: 'center'}}>
+<img width="200" src={useBaseUrl('img/layout-elements/ideal-layout1.png')} />
+</div>
+
+
+Equal heights layout can be achieved by wrapping views into`.resizable(axis: .vertical)`, HStack and .idealLayout:
+```swift
+HStack {
+  shortTextlabel
+    .resizable(axis: .vertical)
+  Spacer(12)
+  longeTextLabel
+    .resizable(axis: .vertical)
+}
+.idealLayout()
+```
+
+<div style={{textAlign: 'center'}}>
+<img width="350" src={useBaseUrl('img/layout-elements/ideal-layout2.png')} />
+</div>

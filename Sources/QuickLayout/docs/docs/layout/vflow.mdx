@@ -1,0 +1,92 @@
+---
+id: vflow
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+
+# VFlow
+<img width="500" src={useBaseUrl('img/layout-elements/vflow1.png')} />
+<br/><br/>
+
+VFlow is a multi-line VStack that starts a new line every time elements don't fit in the bounding space.
+
+
+```swift
+public func VFlow(
+  itemAlignment: HorizontalAlignment = .center,
+  lineAlignment: VerticalAlignment = .center,
+  itemSpacing: CGFloat = 0,
+  lineSpacing: CGFloat = 0,
+  @FastArrayBuilder<Element> children: () -> [Element]
+) -> Element & Layout
+```
+
+```swift
+var body: Layout {
+  VFlow {
+    icon
+    label
+    Button
+  }
+}
+```
+## Item Alignment
+
+Items within a line can be aligned horizontally using the `itemAlignment` parameter. The default value is `.center`
+
+<img   src={useBaseUrl('img/layout-elements/vflow2.png')} />
+
+```swift
+var body: Layout {
+  VFlow(itemAlignment: .leading) {
+    icon
+    label
+    Button
+  }
+}
+```
+
+
+
+## Line Alignment
+
+Similarily, lines can be aligned vertically using the `lineAlignment` parameter. The default value is `.center`
+
+<img   width="700" src={useBaseUrl('img/layout-elements/vflow3.png')} />
+
+```swift
+var body: Layout {
+  HFlow(lineAlignment: .center) {
+    icon
+    label
+    Button
+  }
+}
+```
+
+
+## Spacing
+
+A fixed amount of spacing can be added between each item using the `itemSpacing` parameter or betweeen each line using the `lineSpacing` parameter. The default value is 0.
+
+<img   width="700" src={useBaseUrl('img/layout-elements/vflow4.png')} />
+
+```swift
+var body: Layout {
+  HFlow(itemSpacing: 8, lineSpacing: 10) {
+    icon
+    label
+    Button
+  }
+}
+```
+
+
+### Performance Considerations
+
+VFlow measures each child element exactly once.
+
+:::note
+Spacer Element cannot be used with VFlow
+:::

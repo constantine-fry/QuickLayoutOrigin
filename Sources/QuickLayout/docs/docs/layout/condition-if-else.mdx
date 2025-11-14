@@ -1,0 +1,27 @@
+---
+id: if-else
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# If...else
+
+<img width="400" src={useBaseUrl('img/layout-elements/control-flow1.png')} />
+<br/><br/>
+
+Stacks result builders support conditional layouts, for-loops and `ForEach`.
+
+
+### If...Else
+
+```swift
+var body: Layout {
+  HStack {
+    if somethingTrue {
+      icon1
+    } else {
+      icon2
+    }
+  }
+}
+```

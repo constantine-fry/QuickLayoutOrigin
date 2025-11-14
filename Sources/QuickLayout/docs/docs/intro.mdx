@@ -1,0 +1,69 @@
+---
+sidebar_position: 1
+id: intro
+slug: /
+---
+
+# Overview
+
+QuickLayout is a declarative layout library for iOS, designed to work seamlessly with UIKit. It is lightning-fast, incredibly simple to use, and offers a powerful set of modern layout primitives.
+
+QuickLayout's API will feel natural to many iOS engineers. With a small and well tested codebase, it is production ready. QuickLayout has significant usage across many of Instagram's core features.
+
+### Code Sample
+
+```swift
+import QuickLayout
+
+@QuickLayout
+class MyCellView: UIView {
+
+  let titleLabel = UILabel()
+  let subtitleLabel = UILabel()
+
+  var body: Layout {
+    HStack {
+      VStack(alignment: leading) {
+        titleLabel
+        Spacer(4)
+        subtitleLabel
+      }
+      Spacer()
+    }
+    .padding(.horizontal, 16)
+    .padding(.vertical, 8)
+  }
+}
+```
+
+Above is a fully functional view. Subviews are managed automatically, layout is performed at the correct time, and sizeThatFits returns an accurate value.
+
+### Features
+
+- ⭐️ **Lightning-Fast**: Custom layout engine for blazing fast performance—no Auto Layout or Flexbox overhead.
+- 🧩 **Modern Layout Primitives**: Includes `HStack`, `VStack`, `ZStack`, `Grid`, and `Flow` as lightweight, pure Swift structs that don’t add extra views.
+- 🚀 **Easy Integration**: Simple @QuickLayout macro for fast setup and automatic subview management.
+- 🧵 **Thread-Safe**: [With some caveats](https://facebookincubator.github.io/QuickLayout/concepts/thread-safety/), our API can be used concurrently and off the main thread.
+
+### Motivation
+Declarative frameworks like SwiftUI have gained significant popularity in UI development due to their simplicity and expressive syntax. However, adopting these frameworks often requires developers to commit fully, leaving behind UIKit, which powers countless existing apps. This transition can be daunting, costly, and sometimes impractical for projects deeply embedded in UIKit.
+
+QuickLayout is a new declarative library that brings the power of declarative syntax into the imperative world of UIKit. It is designed to work hand-in-hand with UIKit, ensuring you can easily mix and match declarative and imperative code. This hybrid approach means you can maintain your existing views while gradually transitioning to a more declarative style.
+
+<FbInternalOnly>
+
+### The Showcase App
+
+To see `QuickLayout` in action you can run the following command in `fbsource`:
+
+```bash
+arc showcase QuickLayout
+```
+
+Open `HelloWorldView.swift` file and activate the preview. You can update the layout without having to run the app.
+
+
+### Links
+[Proposal](https://docs.google.com/document/d/15sdPtb2GecwcLSWNAVkH588Z6OtuCMBEpuDGhLE9KcM/edit) | [RFC](https://docs.google.com/document/d/1d4B9J5qnBMIy6ho7VAIhWmQxqEGoEl_NDQ370KYF0cw/edit) | [Workplace Group](https://fb.workplace.com/groups/quicklayout)
+
+</FbInternalOnly>

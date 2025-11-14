@@ -1,0 +1,85 @@
+---
+id: padding
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Padding
+
+<img width="600" src={useBaseUrl('img/layout-elements/padding1.png')} />
+<br/><br/>
+
+```swift
+extension Element {
+  func padding(_ length: CGFloat) -> Element
+  func padding(_ insets: EdgeInsets) -> Element
+  func padding(_ edges: EdgeSet = .all, _ length: CGFloat) -> Element
+}
+```
+
+Padding adds the desired amount of space to the edges of the child element.
+
+### Examples
+
+```swift
+var body: Layout {
+  VStack {
+    label1
+      .padding(8)
+
+    label2
+      .padding(.leading, 8)
+
+    label3
+      .padding(.horizontal, 8)
+
+    label4
+      .padding([.leading, .bottom], 8)
+
+    label5
+      .padding([.horizontal, .bottom], 8)
+
+    label6
+      .padding(.horizontal, 8)
+      .padding(.vertical, 16)
+
+    label5
+      .padding(EdgeInsets(top: 10, leading: 20, bottom: 30, trailing: 40))
+  }
+}
+```
+
+### Edge insets
+
+The inset distances for the sides of an element.
+
+```swift
+struct EdgeInsets {
+
+  var top: CGFloat
+  var bottom: CGFloat
+  var leading: CGFloat
+  var trailing: CGFloat
+
+  static let zero = EdgeInsets()
+
+  init()
+  init(top: CGFloat, leading: CGFloat, bottom: CGFloat, trailing: CGFloat)
+}
+```
+
+### Edge Set
+
+A set of edges.
+
+```swift
+struct EdgeSet: OptionSet {
+  static let all: EdgeSet
+  static let top: EdgeSet
+  static let bottom: EdgeSet
+  static let leading: EdgeSet
+  static let trailing: EdgeSet
+  static let horizontal: EdgeSet
+  static let vertical: EdgeSet
+}
+```

@@ -1,0 +1,39 @@
+---
+id: flexible-frame
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Flexible Frame
+
+```swift
+extension Element {
+  func frame(
+    minWidth: CGFloat? = nil,
+    maxWidth: CGFloat? = nil,
+    minHeight: CGFloat? = nil,
+    maxHeight: CGFloat? = nil,
+    alignment: Alignment = .center
+  ) -> Element & Layout
+}
+```
+
+The Flexible Frame positions its child element inside an invisible flexible container of a given size constraints.
+If you omit a constraint (or pass nil), the frame will use the sizing behavior of its child element for that axis.
+When using this method, you must provide at least one size constraint.
+
+:::caution Flexible Frame doesn't change the size of the view
+The `Flexible Frame` modifier does not directly change the size of its child view but acts like a "picture frame." It proposes the size to the child view, but the child may choose to have a smaller size. Therefore, the `Flexible Frame` modifier uses the `alignment` parameter to position the child within its own size.
+:::
+
+### Examples
+
+```swift
+var body: Layout {
+  HStack {
+    label1
+      .frame(minWidth: 40, maxWidth: 80)
+    label2
+  }
+}
+```

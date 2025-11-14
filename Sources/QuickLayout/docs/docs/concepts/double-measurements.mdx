@@ -1,0 +1,101 @@
+---
+id: double-measurement
+---
+
+# Double Measurement
+
+Stacks in QuickLayout introduce an additional concept called [flexibility](flexibilities.mdx) to optimize layouts. Each standard view in UIKit was annotated with flexibility to improve how they are measured and laid out. However, custom UIView subclasses default to “partial flexibility,” which can lead to inefficient layouts and multiple measurement passes. In this article, we’ll delve into how these extra measurements occur, how they can accumulate, and what APIs QuickLayout provides to optimize layouts.
+
+### The Double Measurement Problem
+When a stack lays out its subviews, each view needs to be measured. In some systems — SwiftUI in particular — views may be measured multiple times with different proposed size before the final layout is determined. This process can be costly in complex interfaces, causing stuttering or dropped frames.
+
+QuickLayout aims to avoid extra measurements whenever possible by leveraging flexibility annotations. Standard UIKit elements are annotated to communicate to the layout system how “rigid” or “flexible” they are, helping QuickLayout decide the most efficient measurement order. If multiple views in a Stack are partially flexible, however, more than one measurement per view can still occur.
+
+### Comparing Imperative Layout
+To understand why repeated measurement is a problem, let’s compare it to an imperative layout approach.
+Consider the following layout:
+
+```swift
+HStack {
+  Text("Lorem ipsum ...")
+  Image("someImage")
+}
+```
+
+###  Manual Layout Example
+In an imperative style (pure UIKit), a developer might write the following:
+```swift
+// Measure the image view once
+let imageViewSize = imageView.sizeThatFits(availableSize)
+imageView.frame = CGRect(x: X, y: Y, width: imageViewSize.width, height: imageViewSize.height)
+
+// Measure the label once, taking into account image width + padding
+let labelAvailableWidth = availableSize.width - imageViewSize.width - padding
+let labelSize = label.sizeThatFits(CGSize(width: labelAvailableWidth, height: availableSize.height))
+label.frame = CGRect(x: X, y: Y, width: labelSize.width, height: labelSize.height)
+```
+
+Here, each view is measured exactly once. The developer manually controls the order of measurement, so there’s no wasted computation. It’s straightforward and efficient but requires more boilerplate code.
+
+### Triple Measurement in SwiftUI Stacks
+In SwiftUI, a similar layout might look like:
+```swift
+HStack {
+  Text("Lorem ipsum ...")
+  Image("someImage")
+}
+```
+
+Under the hood, SwiftUI will measure each subview three times with varying proposed sizes (zero width, 'infinite' width and then final proposed width). This approach allows the library to infer the best distribution of space, but it leads to more repeated measurements—especially when there are many text elements or complex views.
+
+Now consider a more involved layout:
+```swift
+HStack {
+  VStack {
+    Text("Lorem ipsum ...")
+    Text("Lorem ipsum ...")
+    Text("Lorem ipsum ...")
+  }
+  VStack {
+    Image("someImage")
+    Image("someImage")
+    Image("someImage")
+  }
+}
+```
+
+SwiftUI will pre-measure each Text view twice before making the final, third, measurement. Such an algorithm essentially multiplies the performance cost by the number of text elements. In scrolling lists, this can lead to visible jank or dropped frames, affecting the user experience and potentially harming business metrics.
+
+### QuickLayout Stacks
+To combat this, QuickLayout uses [flexibility](flexibilities.mdx) annotations on standard UIKit components:
+- Fixed flexibility: for views whose size is effectively constant (e.g., UIImageView with a fixed image size).
+- Full flexibility: for views that can take all remaining space (e.g., UIScrollView, UICollectionView).
+- Partial flexibility (default for UILabels and custom UIView subclasses): Indicates that the system might need to measure the view more than once to figure out its optimal size.
+
+By identifying certain views as fixed, QuickLayout can measure them first and subtract their space from the total, thus reducing redundant measurements for the partially flexible views. However, if a stack contains multiple “partially flexible” views—such as custom views or UILabel instances—double measurements can still occur.
+
+### How to Avoid Double Measurements
+1. **Annotate Infrastructure Views with Flexibility.** If you own or create infrastructure-level views, mark them as either fixed or fully flexible to ensure QuickLayout can measure them in one pass. This is especially important for heavily used views (e.g., a shared custom button, labels, etc). (see example diff D70773705)
+
+2. **Use Layout Priorities.** When you can’t or don’t want to annotate certain views with fixed/full flexibility, you can guide QuickLayout’s measurement order using [layoutPriority(_:)](layout/layout-priority.mdx). Views with higher layout priority are measured first, which helps reduce multiple measurements for lower-priority siblings. For an example, see D70774081.
+
+For example, to reduce double measurements in the labels below, I give the VStack containing buttons a higher priority:
+```swift
+HStack {
+  VStack {
+    label1
+    label2
+    label2
+  }
+  VStack {
+    aSmallCustomButton1
+    aSmallCustomButton2
+    aSmallCustomButton3
+  }
+  /// Raising the layout priority to avoid double measuring
+  /// the first VStack with labels.
+  .layoutPriority(1)
+}
+```
+
+By assigning a higher layout priority to the image stack, QuickLayout measures buttons first, subtracts their size from the available space, and then measures the stack with text. This avoids repeated measurements of the text views.

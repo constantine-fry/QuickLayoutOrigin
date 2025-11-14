@@ -1,0 +1,36 @@
+---
+id: resizable
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Resizable
+
+<img width="200" src={useBaseUrl('img/layout-elements/resizable2.png')} />
+
+```swift
+extension UIView {
+  func resizable(axis: AxisSet = [.horizontal, .vertical]) -> Element
+}
+```
+
+Makes the view ignore its intrinsic size (size returned by sizeThatFits).
+If no axis specified, the target view becomes fully flexible along both axes. If only one axis is specified, the target view intrinsic size is preserved along the other axis.
+
+The snippet below
+
+```swift
+var body: Layout {
+  HStack {
+    faceImageView1
+      .frame(width: 40, height: 40)
+    faceImageView2
+      .resizable()
+      .frame(width: 40, height: 40)
+  }
+}
+```
+
+will result in the following layout:
+
+<img width="300" src={useBaseUrl('img/layout-elements/resizable1.png')} />

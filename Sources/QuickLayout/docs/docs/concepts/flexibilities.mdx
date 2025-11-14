@@ -1,0 +1,26 @@
+---
+id: flexibilities
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Flexibility
+
+Flexibility describes how a view responds to the size that is proposed by its parent during layout. There are three primary categories of flexibility: inflexible, partially flexible, and fully flexible.
+
+### Inflexible Views
+Inflexible views have a fixed size, meaning they disregard the proposed size and always return their intrinsic dimensions. These views are designed to maintain a constant size regardless of the surrounding layout. For example, a UISwitch always returns a fixed size of 51x31 points, and a UIImageView returns the size of the image it contains, regardless of how much space is available. Stacks measure inflexible views first to reduce double measuremnts of text.
+
+### Partially Flexible Views
+Partially flexible views determine their size based on a combination of their content and the proposed size. They can adjust within certain bounds, depending on how much space is available, but their final size is still influenced by their content. A UILabel is a common example of a partially flexible view. It adjusts its width and height based on the text it contains, but it also takes the proposed size into account.
+
+### Fully Flexible Views
+Fully flexible views do not have an intrinsic size and will adopt the proposed size without conditions. These views simply expand or contract to match the size their parent suggests. Examples of fully flexible views include a plain UIView without a implemented sizeThatFits, a UIScrollView, or a UITextView. These views can grow to fill any available space.
+
+### Axis-Specific Flexibility
+
+Some views can have different types of flexibility depending on the axis. For example, a UITextField is fully flexible horizontally, allowing it to stretch or shrink to fit within its container, but it is inflexible vertically, maintaining a consistent height regardless of the proposed size.
+
+### Layout Elements
+
+Layout modifiers can also affect a view’s flexibility by either inheriting or overriding it. Some modifiers, such as padding inherit child's flexibility. For instance, if a partially flexible view like a UILabel has padding applied, it remains partially flexible, adjusting its size based on its content and the proposed size, but with extra padding around it. On the other hand, certain modifiers like frame can override the view's flexibility. When a frame is applied to any view, it makes it behave as an inflexible element.

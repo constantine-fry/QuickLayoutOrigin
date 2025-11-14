@@ -1,0 +1,29 @@
+---
+id: foreach
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# ForEach
+
+
+### ForEach
+
+```swift
+var body: Layout {
+  VStack(spacing: 8) {
+    ForEach(labels)
+  }
+}
+```
+
+```swift
+var body: Layout {
+  VStack(spacing: 8) {
+    ForEach(labels) { label in
+      label
+        .frame(height: 40)
+    }
+  }
+}
+```

@@ -1,0 +1,68 @@
+---
+id: alignment-guides
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Alignment Guides
+
+```swift
+extension Element {
+  func alignmentGuide(_ horizontalAlignment: HorizontalAlignment, computeValue: @escaping @Sendable (ViewDimensions) -> CGFloat) -> Element
+  func alignmentGuide(_ verticalAlignment: VerticalAlignment, computeValue: @escaping @Sendable (ViewDimensions) -> CGFloat) -> Element
+}
+```
+
+Alignment guides allow you to control how views align within a container like `HStack`, `VStack`, or `ZStack`.
+By default, these stacks align their children based on standard alignment values (like `.center`, `.leading`, or `.top`).
+However, you can use alignment guides to customize alignment behavior by defining your own rules for how each child should be positioned.
+
+:::caution Propagation
+Of note, alignment guides for default types are not recognized beyond the first multi-child container, however custom alignment guides
+are. If you need complex alignment behavior spanning more than one tier of layout
+container, create a custom alignment type for full control here. The example below does this.
+:::
+
+### Examples
+
+```swift
+extension VerticalAlignment {
+  private struct EmojiTitleAlignment: AlignmentID {
+    static func defaultValue(in context: ViewDimensions) -> CGFloat {
+      context[VerticalAlignment.bottom]
+    }
+  }
+  static let emojiTitle = VerticalAlignment(
+    EmojiTitleAlignment.self
+  )
+}
+
+var body: Layout {
+  VStack(spacing: 30) {
+    titleView
+    HStack(alignment: .emojiTitle, spacing: 16) {
+      for emojiViewData in emojiViews {
+        VStack {
+          emojiViewData.emojiView
+          emojiViewData.emojiTitleView
+            .alignmentGuide(.emojiTitle) { _ in 0 }
+          emojiViewData.emojiDescriptionView
+        }
+      }
+    }
+  }
+}
+```
+
+<img width="400" src={useBaseUrl('img/layout-elements/alignment-guides1.png')} />
+<br/><br/>
+
+
+### Use Cases
+
+Alignment guides are a great tool to use when a particular alignment type should mean something slightly different for your view.
+Perhaps your view has some decoration beneath the focal element, but `.bottom` alignment should apply to the focal element and not
+the content below it.
+
+Or, perhaps you'd like `.center` horizontal alignment, but some views need adjustment to match this behavior. While this is possible
+via other means, specifying alignment guides can be a natural, easy way to accomplish this.

@@ -1,0 +1,71 @@
+---
+id: lazy-views
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import {FbInternalOnly} from 'docusaurus-plugin-internaldocs-fb/internal';
+
+# Lazy Views
+
+LazyView is a design pattern that allows for the delayed initialization of a view until it is actually needed.
+This approach improves startup time, scroll performance and business metrics.
+QuickLayout's `LazyView` works similar to lazy variables in Swift, but provides a extra features such as `ifLoaded` getter to retrieve the view if it has been loaded.
+
+
+
+### Sample Code
+
+```swift
+import QuickLayout
+
+@QuickLayout
+final class MyView: UIView {
+
+  var showReplyButton: Bool = false {
+    didSet { setNeedsLayout() }
+  }
+
+  var showDeleteButtonView: Bool = false {
+    didSet { setNeedsLayout() }
+  }
+
+  private var replyButton = LazyView { [weak self] in
+    /// This closure is called when the view is used in the layout for the first time.
+    let button = UIButton(type: .system)
+    ...
+    return button
+  }
+
+  private var deleteButton = LazyView { [weak self] in
+    /// This closure is called when the view is used in the layout for the first time.
+    let button = UIButton(type: .system)
+    ...
+    return button
+  }
+
+  private func updateButtonStateIfNeeded(isEnabled: Bool) {
+    /// Doesn't trigger the view load.
+    replyButton.ifLoaded?.isEnabled = isEnabled
+    deleteButton.ifLoaded?.isEnabled = isEnabled
+  }
+
+  var body: Layout {
+    HStack {
+      commentLabel
+      if showDeleteButtonView { /// If false, the view is not loaded.
+        deleteButton
+      }
+      if showReplyButton { /// If false, the view is not loaded.
+        replyButton
+      }
+    }
+  }
+}
+```
+
+<FbInternalOnly>
+Performance Wins:
+
+1. https://fburl.com/workplace/j03wj8h0
+
+</FbInternalOnly>

@@ -1,0 +1,156 @@
+---
+id: code-samples
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Code Samples
+
+Here is few more samples to get you started.
+
+<img width="200" src={useBaseUrl('img/sample_screenshot_1.png')} />
+<br/><br/>
+
+The screen above was created with the following layout:
+```swift
+import QuickLayout
+
+@QuickLayout
+class LoginView: UIView {
+
+  var keyboardShown: Bool = false {
+    didSet {
+      createAccountButton.isHidden = keyboardShown
+      setNeedsLayout()
+    }
+  }
+
+  let appIconView = IconView()
+  let usernameField = TextField()
+  let passwordField = PasswordField()
+  let logInButton = PillButton(title: "Log in")
+  let forgotPasswordButton = TextButton(title: "Forgot password?")
+  let createAccountButton = PillButton(title: "Create new account")
+
+  var body: Layout {
+    VStack {
+      Spacer()
+      appIconView
+      Spacer()
+      Spacer(8)
+      usernameField
+      Spacer(8)
+      passwordField
+      Spacer(8)
+      logInButton
+      Spacer(8)
+      forgotPasswordButton
+      Spacer(minLength: 8)
+      if !createAccountButton.isHidden {
+        createAccountButton
+      }
+    }.padding(.horizontal: 16)
+  }
+}
+```
+----
+
+<img width="200" src={useBaseUrl('img/sample_screenshot_2.png')} />
+<br/><br/>
+
+```swift
+import QuickLayout
+
+final class PlayerViewController: UIViewController {
+
+  private var albumArt: UIImageView
+  private var songTitle: UILabel
+  private var artistName: UILabel
+  private var currentTime: UILabel
+  private var totalTime: UILabel
+  private var progressBar: UIView
+  private var progressTrack: UIView
+  private var previousButton: UIButton
+  private var playButton: UIButton
+  private var nextButton: UIButton
+
+  @LayoutBuilder
+  private func layout() -> Layout {
+    VStack {
+      Spacer()
+      albumArt
+        .resizable()
+        .aspectRatio(CGSize(width: 1, height: 1))
+        .padding(.horizontal, 40)
+      Spacer(24)
+      songTitle
+        .padding(.horizontal, 20)
+      Spacer(8)
+      artistName
+        .padding(.horizontal, 20)
+      Spacer(32)
+
+      VStack(spacing: 8) {
+        ZStack(alignment: .leading) {
+          progressTrack
+            .resizable()
+            .frame(height: 4)
+          progressBar
+            .resizable()
+            .frame(width: 100, height: 4)
+            .layoutPriority(1)
+        }
+        .padding(.horizontal, 20)
+        HStack {
+          currentTime
+          Spacer()
+          totalTime
+        }
+        .padding(.horizontal, 20)
+      }
+
+      Spacer(32)
+
+      HStack(spacing: 32) {
+        previousButton
+          .resizable()
+          .frame(width: 44, height: 44)
+        playButton
+          .resizable()
+          .frame(width: 60, height: 60)
+        nextButton
+          .resizable()
+          .frame(width: 44, height: 44)
+      }
+
+      Spacer(minLength: 24)
+    }
+  }
+
+  // @QuickLayout is not yet supported for view controllers, so
+  // manual layout integration is needed (we add subviews in `viewDidLoad`,
+  // and apply frames in `viewDidLayoutSubviews`).
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.view.backgroundColor = .white
+    self.view.addSubviews {
+      albumArt
+      songTitle
+      artistName
+      currentTime
+      totalTime
+      progressBar
+      progressTrack
+      previousButton
+      playButton
+      nextButton
+    }
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    let layoutRect = view.bounds.inset(by: view.safeAreaInsets)
+    layout().applyFrame(layoutRect)
+  }
+}
+```

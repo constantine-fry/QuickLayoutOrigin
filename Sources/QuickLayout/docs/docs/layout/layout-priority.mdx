@@ -1,0 +1,36 @@
+---
+id: layout-priority
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Layout Priority
+
+```swift
+extension Element {
+  func layoutPriority(_ priority: CGFloat) -> Element
+}
+```
+
+Sets the priority by which a parent V/HStack should allocate space to this element.
+A view's default priority is 0, which distributes available space evenly to all sibling views.
+Set a higher priority to measure the view first with a larger portion of available space.
+
+
+### Examples
+
+```swift
+var body: Layout {
+  HStack {
+    profilePhoto
+      .aspectRatio(CGSize(width: 1, height: 1))
+      .layoutPriority(1)
+    Spacer(8)
+    titleLabel
+    Spacer(8)
+    bodyLabel
+    Spacer()
+    button
+  }
+}
+```

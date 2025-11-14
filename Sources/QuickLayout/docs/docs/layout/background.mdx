@@ -1,0 +1,27 @@
+---
+id: background
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Background
+
+```swift
+extension Element {
+  func background(alignment: Alignment = .center, content: () -> Element?) -> Element
+}
+```
+
+Positions the content element within the frame of the target element.
+The modifier measures the target element, proposes the target element's size to the content element, and then aligns it within the frame of the target element.
+
+### Examples
+
+```swift
+var body: Layout {
+  profilePhoto
+    .background {
+      backgroundView
+    }
+}
+```

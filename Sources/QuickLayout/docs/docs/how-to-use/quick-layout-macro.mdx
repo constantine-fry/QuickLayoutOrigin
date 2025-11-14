@@ -1,0 +1,122 @@
+---
+id: macro-layout-integration
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Quick Layout Macro
+
+QuickLayout supports fast, automatic layout management for UIKit views. This is achieved by prepending `@QuickLayout` to your view's declaration.
+`@QuickLayout` supports a number of features, including automatic layout, subview management, and sizing. It is the recommended
+way of integrating QuickLayout, although manual integration is still available when needed.
+
+<FbInternalOnly>
+
+:::tip Note
+For Instagram libraries declared with ig_apple_library, `@QuickLayout` is present whenever the `QuickLayout` module is. For other app libraries
+or targets, you must manually import the macro dependencies in your BUCK target:
+
+```
+swift_macro_deps = ["//fbobjc/Libraries/MobileUI/QuickLayout:QuickLayoutMacro"],
+```
+:::
+
+</FbInternalOnly>
+
+The snippet below demonstrates a simple `@QuickLayout` view:
+
+```swift
+import QuickLayout
+
+@QuickLayout
+final class MyView: UIView {
+
+  private let label = {
+    let label = UILabel()
+    label.text = "Hello World!"
+    return label
+  }()
+
+  private let image = {
+    let image = UIImageView()
+    image.image = UIImage(systemName: "globe.americas")
+    return image
+  }()
+
+  var body: Layout {
+    HStack {
+      label
+      Spacer(8)
+      image
+    }
+  }
+}
+```
+
+:::tip Note
+Views that utilize @QuickLayout will automatically manage their view hierarchy. Therefore, there is no need to call addSubviews/removeFromSuperview manually.
+:::
+
+### Stateful View
+When the state of a view changes, call `setNeedsLayout`. This will prompt the view to update its hierarchy, animate any added or removed views, and re-layout all subviews. The snippet below demonstrates an example of a stateful view. It lazily creates the `label` view when the user presses the `increaseButton` for the first time and updates the layout accordingly.
+
+```swift
+@QuickLayout
+final class CounterView: UIView {
+
+  private var count = 0
+
+  private lazy var label {
+    // This view will only be created when the count is set to 1 for the first time.
+    UILabel()
+  }
+
+  private lazy var increaseButton = {
+    let button = UIButton(type: .system)
+    button.setTitle("Increase", for: .normal)
+    button.addTarget(self, action: #selector(addCount), for: .touchUpInside)
+    return button
+  }()
+
+  private lazy var resetButton = {
+    let button = UIButton(type: .system)
+    button.setTitle("Reset", for: .normal)
+    button.addTarget(self, action: #selector(resetCount), for: .touchUpInside)
+    return button
+  }()
+
+  var body: Layout {
+    VStack(spacing: 8) {
+      if count > 0 {
+        label
+      }
+      HStack(spacing: 8) {
+        increaseButton
+        resetButton
+      }
+    }
+  }
+
+  @objc private func addCount() {
+    count += 1
+    label.text = "Count: \(count)"
+    setNeedsLayout()
+  }
+
+  @objc private func resetCount() {
+    count = 0
+    setNeedsLayout()
+  }
+}
+```
+
+### Advanced @QuickLayout Usage
+It is possible to continue overriding `layoutSubviews` and even `sizeThatFits` while utilizing the @QuickLayout macro. When doing so:
+
+- `layoutSubviews` will perform `body` layout directly after `super.layoutSubviews()` is called.
+- `sizeThatFits` will override the default body sizing, allowing you to return something fully custom.
+
+Additionally, the following methods are available to override:
+
+- `isBodyEnabled`: this allows you to toggle automatic layout management. It's a great way to test a migration to QuickLayout in-place.
+- `bodyContainerView`: this changes the view that subviews are managed within. Collection view and table view cells utilize this to ensure views are placed on `contentView`.
